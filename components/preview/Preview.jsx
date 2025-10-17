@@ -1,17 +1,17 @@
 "use client";
 
 import {
-  FaLinkedin,
-  FaTwitter,
-  FaFacebook,
-  FaInstagram,
-  FaYoutube,
-  FaExternalLinkAlt,
-  FaChevronDown,
-  FaFileAlt,
-  FaTh,
-  FaEyeSlash,
-  FaHackerrank,
+  FaLinkedin,
+  FaTwitter,
+  FaFacebook,
+  FaInstagram,
+  FaYoutube,
+  FaExternalLinkAlt,
+  FaChevronDown,
+  FaFileAlt,
+  FaTh,
+  FaEyeSlash,
+  FaHackerrank,
 } from "react-icons/fa";
 import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 import { CgWebsite } from "react-icons/cg";
@@ -26,18 +26,18 @@ import TemplateFive from "./TemplateFive"
 import TemplateSix from "./TemplateSix"
 import { useSectionTitles } from "../../contexts/SectionTitleContext";
 import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -45,207 +45,220 @@ import { ImGithub } from "react-icons/im";
 import { SiCodeforces, SiLeetcode } from "react-icons/si";
 
 const Preview = () => {
-  const { resumeData, setResumeData } = useContext(ResumeContext);
-  const [currentTemplate, setCurrentTemplate] = useState("template1");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const { resumeData, setResumeData } = useContext(ResumeContext);
+  const [currentTemplate, setCurrentTemplate] = useState("template1");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-  // Handle client-side initialization
-  useEffect(() => {
-    setIsClient(true);
-    if (typeof window !== "undefined") {
-      const savedTemplate = localStorage.getItem("currentTemplate");
-      if (savedTemplate) {
-        setCurrentTemplate(savedTemplate);
-      }
-    }
-  }, []);
+  // Handle client-side initialization
+  useEffect(() => {
+    setIsClient(true);
+    if (typeof window !== "undefined") {
+      const savedTemplate = localStorage.getItem("currentTemplate");
+      if (savedTemplate) {
+        setCurrentTemplate(savedTemplate);
+      }
+    }
+  }, []);
 
-  // Save template selection to localStorage
-  useEffect(() => {
-    if (isClient && typeof window !== "undefined") {
-      localStorage.setItem("currentTemplate", currentTemplate);
-    }
-  }, [currentTemplate, isClient]);
+  // Save template selection to localStorage
+  useEffect(() => {
+    if (isClient && typeof window !== "undefined") {
+      localStorage.setItem("currentTemplate", currentTemplate);
+    }
+  }, [currentTemplate, isClient]);
 
-  // Available templates
-  const templates = [
-    {
-      id: "template1",
-      name: "Classic Template",
-      description: "Clean and professional layout",
-      icon: FaFileAlt,
-    },
-    {
-      id: "template2",
-      name: "Modern Template",
-      description: "Dynamic with drag-and-drop sections",
-      icon: FaTh,
-    },
-    {
-      id: "template3",
-      name: "Classic Template II",
-      description: "Clean and ATS friendly",
-      icon: FaTh,
-    },
-    {
-    id: "template5",
-    name: "Fancy Template",
-    description: "New modern layout",
-    icon: FaFileAlt,
-  },
-  {
-    id: "template6",
-    name: "Smart Template",
-    description: "clean layout with divisions",
-    icon: FaFileAlt,
-  },
-  ];
+  // Available templates
+  const templates = [
+    {
+      id: "template1",
+      name: "Classic Template",
+      description: "Clean and professional layout",
+      icon: FaFileAlt,
+    },
+    {
+      id: "template2",
+      name: "Modern Template",
+      description: "Dynamic with drag-and-drop sections",
+      icon: FaTh,
+    },
+    {
+      id: "template3",
+      name: "Classic Template II",
+      description: "Clean and ATS friendly",
+      icon: FaTh,
+    },
+    {
+    id: "template5",
+    name: "Fancy Template",
+    description: "New modern layout",
+    icon: FaFileAlt,
+  },
+  {
+    id: "template6",
+    name: "Smart Template",
+    description: "clean layout with divisions",
+    icon: FaFileAlt,
+  },
+  ];
 
-  const defaultSections = [
-    "summary",
-    "education",
-    "experience",
-    "projects",
-    "skills",
-    "softSkills",
-    "languages",
-    "certifications",
-  ];
+  const defaultSections = [
+    "summary",
+    "education",
+    "experience",
+    "projects",
+    "skills",
+    "softSkills",
+    "languages",
+    "certifications",
+    "awards",
+  ];
 
-  const sectionLabels = {
-    summary: "Professional Summary",
-    education: "Education",
-    experience: "Professional Experience",
-    projects: "Projects",
-    skills: "Technical Skills",
-    softSkills: "Soft Skills",
-    languages: "Languages",
-    certifications: "Certifications",
-  };
+  const sectionLabels = {
+    summary: "Professional Summary",
+    education: "Education",
+    experience: "Professional Experience",
+    projects: "Projects",
+    skills: "Technical Skills",
+    softSkills: "Soft Skills",
+    languages: "Languages",
+    certifications: "Certifications",
+    awards: "Awards and Recognition",
+  };
 
-  const [sectionOrder, setSectionOrder] = useState(defaultSections);
-  const [enabledSections, setEnabledSections] = useState(() => {
-    // All sections enabled by default
-    const initial = {};
-    defaultSections.forEach((section) => {
-      initial[section] = true;
-    });
-    return initial;
-  });
-  const [showSectionToggle, setShowSectionToggle] = useState(false);
-  const dropdownRef = useRef(null);
-  const toggleRef = useRef(null);
+  const [sectionOrder, setSectionOrder] = useState(defaultSections);
+  const [enabledSections, setEnabledSections] = useState(() => {
+    // All sections enabled by default
+    const initial = {};
+    defaultSections.forEach((section) => {
+      initial[section] = true;
+    });
+    return initial;
+  });
+  const [showSectionToggle, setShowSectionToggle] = useState(false);
+  const dropdownRef = useRef(null);
+  const toggleRef = useRef(null);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-      if (toggleRef.current && !toggleRef.current.contains(event.target)) {
-        setShowSectionToggle(false);
-      }
-    };
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      if (toggleRef.current && !toggleRef.current.contains(event.target)) {
+        setShowSectionToggle(false);
+      }
+    };
 
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setIsDropdownOpen(false);
-        setShowSectionToggle(false);
-      }
-    };
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsDropdownOpen(false);
+        setShowSectionToggle(false);
+      }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
-  // Handle section toggle
-  const toggleSection = (sectionId) => {
-    setEnabledSections((prev) => {
-      const updated = {
-        ...prev,
-        [sectionId]: !prev[sectionId],
-      };
-      if (isClient) {
-        localStorage.setItem("enabledSections", JSON.stringify(updated));
-      }
-      return updated;
-    });
-  };
+  // Handle section toggle
+  const toggleSection = (sectionId) => {
+    setEnabledSections((prev) => {
+      const updated = {
+        ...prev,
+        [sectionId]: !prev[sectionId],
+      };
+      if (isClient) {
+        localStorage.setItem("enabledSections", JSON.stringify(updated));
+      }
+      return updated;
+    });
+  };
 
-  const icons = [
-    { name: "linkedin", icon: <FaLinkedin /> },
-    { name: "twitter", icon: <FaTwitter /> },
-    { name: "facebook", icon: <FaFacebook /> },
-    { name: "instagram", icon: <FaInstagram /> },
-    { name: "youtube", icon: <FaYoutube /> },
-    { name: "website", icon: <CgWebsite /> },
-    { name: "github", icon: <ImGithub /> },
-    { name: "leetcode", icon: <SiLeetcode /> },
-    {name: "hackerrank", icon: <FaHackerrank />},
-    {name: "hacker rank", icon: <FaHackerrank />},
-    {name: "codeforces", icon: <SiCodeforces />}
-  ];
+  const icons = [
+    { name: "linkedin", icon: <FaLinkedin /> },
+    { name: "twitter", icon: <FaTwitter /> },
+    { name: "facebook", icon: <FaFacebook /> },
+    { name: "instagram", icon: <FaInstagram /> },
+    { name: "youtube", icon: <FaYoutube /> },
+    { name: "website", icon: <CgWebsite /> },
+    { name: "github", icon: <ImGithub /> },
+    { name: "leetcode", icon: <SiLeetcode /> },
+    {name: "hackerrank", icon: <FaHackerrank />},
+    {name: "hacker rank", icon: <FaHackerrank />},
+    {name: "codeforces", icon: <SiCodeforces />}
+  ];
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  useEffect(() => {
-    if (isClient) {
-      const savedOrder = localStorage.getItem("sectionOrder");
-      const savedEnabled = localStorage.getItem("enabledSections");
+  useEffect(() => {
+    if (isClient) {
+      const savedOrder = localStorage.getItem("sectionOrder");
+      const savedEnabled = localStorage.getItem("enabledSections");
 
-      if (savedOrder) {
-        const parsedOrder = JSON.parse(savedOrder);
-        // Add missing sections
-        if (!parsedOrder.includes("certifications")) {
-          parsedOrder.push("certifications");
+      if (savedOrder) {
+        const parsedOrder = JSON.parse(savedOrder);
+        // Add missing sections
+        if (!parsedOrder.includes("certifications")) {
+          parsedOrder.push("certifications");
+        }
+        if (!parsedOrder.includes("education")) {
+          // Insert education after summary if it exists, otherwise at the beginning
+          const summaryIndex = parsedOrder.indexOf("summary");
+          if (summaryIndex !== -1) {
+            parsedOrder.splice(summaryIndex + 1, 0, "education");
+          } else {
+            parsedOrder.unshift("education");
+          }
+        }
+        // 🚀 START OF MODIFICATION for 'awards'
+        if (!parsedOrder.includes("awards")) {
+            // Insert it right after 'certifications' if found, otherwise at the end.
+            const certsIndex = parsedOrder.indexOf("certifications");
+            if (certsIndex !== -1) {
+                parsedOrder.splice(certsIndex + 1, 0, "awards");
+            } else {
+                parsedOrder.push("awards");
+            }
         }
-        if (!parsedOrder.includes("education")) {
-          // Insert education after summary if it exists, otherwise at the beginning
-          const summaryIndex = parsedOrder.indexOf("summary");
-          if (summaryIndex !== -1) {
-            parsedOrder.splice(summaryIndex + 1, 0, "education");
-          } else {
-            parsedOrder.unshift("education");
-          }
-        }
-        setSectionOrder(parsedOrder);
-      } else {
-        localStorage.setItem("sectionOrder", JSON.stringify(defaultSections));
-      }
+        // 🚀 END OF MODIFICATION
+        setSectionOrder(parsedOrder);
+      } else {
+        localStorage.setItem("sectionOrder", JSON.stringify(defaultSections));
+      }
 
-      if (savedEnabled) {
-        const parsedEnabled = JSON.parse(savedEnabled);
-        // Ensure all default sections are represented
-        const updatedEnabled = {};
-        defaultSections.forEach((section) => {
-          updatedEnabled[section] = parsedEnabled.hasOwnProperty(section)
-            ? parsedEnabled[section]
-            : true;
-        });
-        setEnabledSections(updatedEnabled);
-      } else {
-        const initial = {};
-        defaultSections.forEach((section) => {
-          initial[section] = true;
-        });
-        localStorage.setItem("enabledSections", JSON.stringify(initial));
-      }
-    }
-  }, [isClient]);
+      if (savedEnabled) {
+        const parsedEnabled = JSON.parse(savedEnabled);
+        // Ensure all default sections are represented
+        const updatedEnabled = {};
+        defaultSections.forEach((section) => {
+          updatedEnabled[section] = parsedEnabled.hasOwnProperty(section)
+            ? parsedEnabled[section]
+            : true;
+        });
+        setEnabledSections(updatedEnabled);
+      } else {
+        const initial = {};
+        defaultSections.forEach((section) => {
+          initial[section] = true;
+        });
+        localStorage.setItem("enabledSections", JSON.stringify(initial));
+      }
+    }
+  }, [isClient]);
 
   // Handle drag and drop for section reordering using @dnd-kit
   const handleDragEnd = (event) => {
@@ -637,6 +650,11 @@ const ClassicTemplate = ({
       title: "Certifications",
       content: resumeData.certifications,
     },
+    {
+      id: "awards",
+      title: "Awards and Recognition",
+      content: resumeData.awards, // Assumes awards data is in resumeData.awards
+    },
   ];
 
   const orderedSections = sectionOrder
@@ -861,6 +879,41 @@ const ClassicTemplate = ({
                           <FaExternalLinkAlt className='w-3 h-3' />
                         </a>
                       )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null;
+        case "awards":
+        return resumeData.awards && resumeData.awards.length > 0 ? (
+          <div>
+            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+              {customSectionTitles.awards || "Awards and Recognition"}
+            </h2>
+            <ul className="list-disc list-inside content font-sans  text-black">
+              {resumeData.awards.map((award, index) => (
+                <li key={index} className='mb-1'>
+                  <div className='flex items-center gap-2'>
+                    <span>
+                      <span className='font-semibold'>{award.name}</span>
+                      {award.issuer && (
+                        <span className="font-sans text-black"> - {award.issuer}</span>
+                      )}
+                      {award.year && (
+                        <span className="font-sans text-gray-600"> ({award.year})</span>
+                      )}
+                    </span>
+                    {award.link && award.link.trim() !== "" && (
+                      <Link
+                        href={award.link}
+                        className='text-blue-600 hover:text-blue-800 transition-colors'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <FaExternalLinkAlt className='w-3 h-3' />
+                      </Link>
+                    )}
                   </div>
                 </li>
               ))}

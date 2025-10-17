@@ -19,6 +19,8 @@ import Summary from "@/components/form/Summary";
 import Projects from "@/components/form/Projects";
 import Education from "@/components/form/Education";
 import Certification from "@/components/form/certification";
+// ➡️ NEW: Import the Award component
+import Award from "@/components/form/Award"; 
 import EditableFormTitle from "../../../components/form/EditableFormTitle";
 import { SectionTitleProvider } from "@/contexts/SectionTitleContext";
 import { ResumeContext } from "@/contexts/ResumeContext";
@@ -170,7 +172,7 @@ export default function BuilderPage() {
                   <div className='p-4 sm:p-6 lg:p-5 relative z-20 backdrop-blur-[1.5px]'>
                     {/* Header */}
 
-                    <div className='bg-black/85 border border-pink-400/80 hover:border-pink-400  h-12 relative md:p-0 overflow-hidden flex flex-col gap-1 justify-center items-center mb-6 w-full rounded-full'>
+                    <div className='bg-black/85 border border-pink-400/80 hover:border-pink-400  h-12 relative md:p-0 overflow-hidden flex flex-col gap-1 justify-center items-center mb-6 w-full rounded-full'>
                       <div className=' flex gap-0.5 items-center'>
                         <h1 className='text-2xl md:text-3-xl text-gray-200 font-bold tracking-wide'>
                           Profocto
@@ -235,6 +237,8 @@ export default function BuilderPage() {
 
                       <Language />
                       <Certification />
+                      {/* ➡️ NEW: Render the Awards component here */}
+                      <Award /> 
                     </div>
 
                     {/* Floating Profile Pocket - stick only on large screens to avoid overlap */}
@@ -343,7 +347,7 @@ export default function BuilderPage() {
                               </svg>
                             </button>
                             <button
-                              className='absolute   border-pink-500/40 border-[1.7px]  bg-black rounded-full z-[9999] text-white -translate-y-16 bottom-0 mt-3 p-2 right-0 text-xs '
+                              className='absolute   border-pink-500/40 border-[1.7px]  bg-black rounded-full z-[9999] text-white -translate-y-16 bottom-0 mt-3 p-2 right-0 text-xs '
                               onClick={scrollToTop}
                             >
                               {" "}

@@ -3,7 +3,7 @@
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdEmail, MdLocationOn, MdPhone, MdLink } from "react-icons/md";
 import { GiGraduateCap } from "react-icons/gi";
-import { BiBriefcase, BiBookAlt, BiCodeAlt, BiStar } from "react-icons/bi";
+import { BiBriefcase, BiBookAlt, BiCodeAlt, BiStar, BiTrophy } from "react-icons/bi";
 import DateRange from "../utility/DateRange";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -12,7 +12,6 @@ import { useSectionTitles } from "../../contexts/SectionTitleContext";
 import { SortableItem, SortableSection } from "./Preview";
 import { useEffect, useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
-
 
 const TemplateSix = ({
   resumeData,
@@ -45,6 +44,8 @@ const TemplateSix = ({
         setResumeData((prev) => ({ ...prev, workExperience: updateArray(resumeData.workExperience) }));
       if (sectionType === "education")
         setResumeData((prev) => ({ ...prev, education: updateArray(resumeData.education) }));
+      if (sectionType === "awards")
+        setResumeData((prev) => ({ ...prev, awards: updateArray(resumeData.awards) }));
     }
   };
 
@@ -57,13 +58,13 @@ const TemplateSix = ({
     softSkills: { id: "softSkills", title: "Soft Skills", content: resumeData.skills.find(s => s.title === "Soft Skills")?.skills || [], icon: <BiStar /> },
     languages: { id: "languages", title: "Languages", content: resumeData.languages, icon: <BiBookAlt /> },
     certifications: { id: "certifications", title: "Certifications", content: resumeData.certifications, icon: <BiStar /> },
+    awards: { id: "awards", title: "Awards & Achievements", content: resumeData.awards, icon: <BiTrophy /> },
   };
 
   const orderedSections = sectionOrder
     .map(id => sectionsMap[id])
     .filter(s => s && enabledSections[s.id] && s.content && (Array.isArray(s.content) ? s.content.length > 0 : s.content.length > 0));
 
-  // Component to render the section header (Title + Line)
   const SectionHeader = ({ id, icon, defaultTitle }) => (
     <div className="mb-2 print:mb-1">
       <h2 className="text-lg font-bold uppercase tracking-wider text-gray-900 mb-1">
@@ -132,7 +133,7 @@ const TemplateSix = ({
                       />
                     </div>
                     <p className="text-gray-700 text-sm mt-0.5 leading-snug">{item.description}</p>
-                    {item.technologies && <p className="text-xs text-gray-600 mt-0.5">**Tech Stack:** {item.technologies}</p>}
+                    {item.technologies && <p className="text-xs text-gray-600 mt-0.5">Tech Stack: {item.technologies}</p>}
                   </div>
                 </SortableItem>
               ))}
@@ -164,10 +165,68 @@ const TemplateSix = ({
             </SortableContext>
           </DndContext>
         );
+      case "awards":
+        return (
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => handleItemDragEnd(e, "awards")}>
+            <SortableContext items={resumeData.awards.map((_, i) => `award-${i}`)} strategy={verticalListSortingStrategy}>
+              {resumeData.awards.map((award, index) => (
+                <SortableItem key={`award-${index}`} id={`award-${index}`}>
+                  <div className="mb-3 print:mb-2 text-sm text-gray-700">
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-semibold text-gray-900 leading-tight flex items-center gap-2">
+                        {award.name}
+                        {award.link && (
+                          <Link href={award.link} target="_blank" className="text-gray-500 hover:text-black">
+                            <FaExternalLinkAlt className="w-3 h-3" />
+                          </Link>
+                        )}
+                      </h3>
+                      <span className="text-xs font-semibold text-gray-600 flex-shrink-0 ml-2 pt-1">
+                        {award.date}
+                      </span>
+                    </div>
+                    {award.issuer && (
+                      <p className="italic text-gray-600 text-xs mb-1">
+                        {award.issuer}
+                      </p>
+                    )}
+                    {award.description && (
+                      <p className="text-gray-700 text-sm leading-snug">
+                        {award.description}
+                      </p>
+                    )}
+                  </div>
+                </SortableItem>
+              ))}
+            </SortableContext>
+          </DndContext>
+        );
+      case "certifications": // NEW LOGIC FOR CERTIFICATIONS
+        return (
+          <ul className="list-disc list-outside text-gray-700 ml-4 text-sm leading-snug">
+            {resumeData.certifications.map((cert, index) => {
+              // Handle both string and object formats for backward compatibility
+              const name = typeof cert === 'string' ? cert : cert.name;
+              const issuer = typeof cert === 'object' ? cert.issuer : null;
+              const link = typeof cert === 'object' ? cert.link : null;
+
+              return (
+                <li key={index} className="mb-1">
+                  <span className="font-semibold">{name}</span>
+                  {issuer && <span className="italic text-gray-600"> (Issuer: {issuer})</span>}
+                  {link && link.trim() !== "" && (
+                    <Link href={link} target="_blank" className="text-gray-500 hover:text-black ml-2">
+                      <FaExternalLinkAlt className="w-3 h-3 inline align-baseline" />
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        );
       case "skills":
       case "softSkills":
       case "languages":
-      case "certifications":
         const listContent = Array.isArray(section.content)
           ? section.content.map(s => typeof s === "string" ? s : s.skills?.join(", ") || s.name).join(" | ")
           : section.content;
@@ -182,7 +241,7 @@ const TemplateSix = ({
 
   return (
     <div className="w-full h-full bg-white p-6 print:p-0 font-serif">
-      {/* Header - Solid Black/Dark Gray Block */}
+      {/* Header */}
       <div className="bg-gray-800 text-white p-4 mb-4 print:p-2 print:mb-2">
         <h1 className="text-4xl font-extrabold tracking-tight mb-1">
           {resumeData.name}
@@ -190,8 +249,7 @@ const TemplateSix = ({
         <h2 className="text-xl font-light mb-3 opacity-90">
           {resumeData.position}
         </h2>
-        
-        {/* Contact Info - Compact and White/Light Gray */}
+
         <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm opacity-80">
           {resumeData.contactInformation && (
             <div className="flex items-center gap-1">
@@ -208,7 +266,6 @@ const TemplateSix = ({
               <MdLocationOn className="w-4 h-4" /> <span>{resumeData.address}</span>
             </div>
           )}
-          {/* Example for a link (LinkedIn/Portfolio) */}
           {resumeData.linkedin && (
             <div className="flex items-center gap-1">
               <MdLink className="w-4 h-4" /> <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="underline">{resumeData.linkedin}</a>
@@ -217,7 +274,7 @@ const TemplateSix = ({
         </div>
       </div>
 
-      {/* Main Content - Single Column */}
+      {/* Main */}
       <div className="px-4 print:px-0">
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={orderedSections.map(s => s.id)} strategy={verticalListSortingStrategy}>

@@ -21,9 +21,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 // Sortable Item Component for individual items within sections
@@ -102,6 +100,7 @@ const TemplateTwo = ({
   skillsdata,
   languagesdata,
   certificationsdata,
+  awardsdata, // <-- new prop
   sectionOrder,
   enabledSections,
   onDragEnd,
@@ -123,7 +122,8 @@ const TemplateTwo = ({
     { id: "skills", title: customSectionTitles.skills || "Technical Skills", content: skillsdata },
     { id: "softskills", title: customSectionTitles.softskills || "Soft Skills", content: skillsdata?.find(skill => skill.title === "Soft Skills")?.skills || [] },
     { id: "languages", title: customSectionTitles.languages || "Languages", content: languagesdata },
-    { id: "certifications", title: customSectionTitles.certifications || "Certifications", content: certificationsdata }
+    { id: "certifications", title: customSectionTitles.certifications || "Certifications", content: certificationsdata },
+    { id: "awards", title: customSectionTitles.awards || "Awards", content: awardsdata } // <-- new section
   ];
 
   // Sensors for drag and drop
@@ -140,7 +140,6 @@ const TemplateTwo = ({
 
     if (active.id !== over?.id) {
       if (onDragEnd) {
-        // Create a mock event that matches the old react-beautiful-dnd format
         const result = {
           draggableId: active.id,
           type: 'SECTION',
@@ -157,7 +156,6 @@ const TemplateTwo = ({
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      // Handle reordering within the same section
       if (sectionType === 'projects' && setResumeData) {
         const oldIndex = parseInt(active.id.replace('project-', ''));
         const newIndex = parseInt(over.id.replace('project-', ''));
@@ -174,6 +172,14 @@ const TemplateTwo = ({
           const newExperience = arrayMove(workExperiencedata, oldIndex, newIndex);
           setResumeData(prev => ({ ...prev, workExperience: newExperience }));
         }
+      } else if (sectionType === 'awards' && setResumeData) {
+        const oldIndex = parseInt(active.id.replace('award-', ''));
+        const newIndex = parseInt(over.id.replace('award-', ''));
+        
+        if (oldIndex !== -1 && newIndex !== -1) {
+          const newAwards = arrayMove(awardsdata, oldIndex, newIndex);
+          setResumeData(prev => ({ ...prev, awards: newAwards }));
+        }
       }
     }
   };
@@ -182,7 +188,6 @@ const TemplateTwo = ({
     .map(id => sections.find(section => section.id === id))
     .filter(section => section !== undefined && (!enabledSections || enabledSections[section.id]));
 
-  // Prevent hydration issues by only rendering on client
   if (!isClient) {
     return <div className="w-full h-96 bg-gray-50 animate-pulse rounded-lg"></div>;
   }
@@ -219,6 +224,45 @@ const TemplateTwo = ({
                 </li>
               ))}
             </ul>
+          </div>
+        );
+      case "awards":
+        return (
+          <div>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1">
+              {customSectionTitles.awards || "Awards"}
+            </h2>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={(event) => handleItemDragEnd(event, 'awards')}
+            >
+              <SortableContext
+                items={awardsdata && awardsdata.length > 0 ? awardsdata.map((_, idx) => `award-${idx}`) : []}
+                strategy={verticalListSortingStrategy}
+              >
+                {awardsdata && awardsdata.map((award, i) => (
+                  <SortableItem key={`award-${i}`} id={`award-${i}`}>
+                    <div className="flex items-center gap-2">
+                      <span>
+                        {award.title}
+                        {award.year && <span className="text-gray-600"> - {award.year}</span>}
+                      </span>
+                      {award.link && award.link.trim() !== '' && (
+                        <Link
+                          href={award.link}
+                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaExternalLinkAlt className="w-3 h-3" />
+                        </Link>
+                      )}
+                    </div>
+                  </SortableItem>
+                ))}
+              </SortableContext>
+            </DndContext>
           </div>
         );
       case "summary":
@@ -394,29 +438,7 @@ const TemplateTwo = ({
     { name: "website", icon: <CgWebsite /> },
   ];
 
-  // Function to extract username from URL
-  const getUsername = (url) => {
-    return url.split('/').pop();
-  };
-
-  // Prevent hydration mismatch by showing a simple loading state on server
-  if (!isClient) {
-    return (
-      <div className="w-full h-full bg-white p-4">
-        <div className="text-center mb-2">
-          <h1 className="name">{namedata}</h1>
-          <p className="profession">{positiondata}</p>
-        </div>
-        <div className="animate-pulse">
-          <div className="space-y-4">
-            {orderedSections.map((section) => (
-              <div key={section.id} className="h-16 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const getUsername = (url) => url.split('/').pop();
 
   return (
     <div className="w-full h-full bg-white p-4">
@@ -435,30 +457,24 @@ const TemplateTwo = ({
           addressicon={addressicon}
         />
         <div className="flex justify-center items-center gap-2 mt-1 text-sm">
-          {resumeData && resumeData.socialMedia && resumeData.socialMedia.map((socialMedia, index) => {
-            return (
-              <a
-                href={`http://${socialMedia.link}`}
-                aria-label={socialMedia.socialMedia}
-                key={index}
-                title={socialMedia.socialMedia}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-[2px] text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                {icons.map((icon, index) => {
-                  if (icon.name === socialMedia.socialMedia.toLowerCase()) {
-                    return <span key={index} className="text-sm">{icon.icon}</span>;
-                  }
-                })}
-                {getUsername(socialMedia.link)}
-              </a>
-            );
-          })}
+          {resumeData && resumeData.socialMedia && resumeData.socialMedia.map((socialMedia, index) => (
+            <a
+              href={`http://${socialMedia.link}`}
+              aria-label={socialMedia.socialMedia}
+              key={index}
+              title={socialMedia.socialMedia}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-[2px] text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              {icons.map((icon, idx) => icon.name === socialMedia.socialMedia.toLowerCase() ? <span key={idx} className="text-sm">{icon.icon}</span> : null)}
+              {getUsername(socialMedia.link)}
+            </a>
+          ))}
         </div>
       </div>
 
-      {/* Draggable Sections with Modern @dnd-kit */}
+      {/* Draggable Sections */}
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

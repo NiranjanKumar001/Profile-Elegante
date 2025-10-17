@@ -93,6 +93,11 @@ const TemplateFour = ({
       title: "Certifications",
       content: resumeData.certifications,
     },
+    {
+      id: "awards",
+      title: "Awards & Achievements",
+      content: resumeData.awards,
+    },
   ];
 
   const orderedSections = sectionOrder
@@ -104,10 +109,10 @@ const TemplateFour = ({
       case "summary":
         return (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.summary || "Professional Summary"}
             </h2>
-            <p className='content !text-gray-800 text-justify'>
+            <p className="content !text-gray-800 text-justify">
               {resumeData.summary}
             </p>
           </div>
@@ -116,21 +121,21 @@ const TemplateFour = ({
       case "education":
         return resumeData.education.length > 0 ? (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.education || "Education"}
             </h2>
             {resumeData.education.map((item, index) => (
               <div
                 key={index}
-                className='mb-1 flex justify-between items-start'
+                className="mb-1 flex justify-between items-start"
               >
-                <div className='flex-1'>
-                  <h3 className='content font-semibold text-gray-900'>
+                <div className="flex-1">
+                  <h3 className="content font-semibold text-gray-900">
                     {item.school}
                   </h3>
-                  <p className='content !text-gray-800'>{item.degree}</p>
+                  <p className="content !text-gray-800">{item.degree}</p>
                 </div>
-                <div className='ml-4 text-right'>
+                <div className="ml-4 text-right">
                   <DateRange
                     startYear={item.startYear}
                     endYear={item.endYear}
@@ -145,7 +150,7 @@ const TemplateFour = ({
       case "experience":
         return resumeData.workExperience.length > 0 ? (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.experience || "Professional Experience"}
             </h2>
             <DndContext
@@ -159,17 +164,17 @@ const TemplateFour = ({
               >
                 {resumeData.workExperience.map((item, index) => (
                   <SortableItem key={`work-${index}`} id={`work-${index}`}>
-                    <div className='flex justify-between items-start mb-1'>
-                      <div className='flex-1'>
-                        <h3 className='content flex items-center gap-1 i-bold text-gray-900'>
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex-1">
+                        <h3 className="content flex items-center gap-1 i-bold text-gray-900">
                           {item.position} |{" "}
-                          <p className='content !text-gray-800 !font-medium'>
+                          <p className="content !text-gray-800 !font-medium">
                             {" "}
                             {item.company}
                           </p>
                         </h3>
                       </div>
-                      <div className='text-right'>
+                      <div className="text-right">
                         <DateRange
                           startYear={item.startYear}
                           endYear={item.endYear}
@@ -177,12 +182,12 @@ const TemplateFour = ({
                         />
                       </div>
                     </div>
-                    <p className='content !text-gray-800 mb-2'>
+                    <p className="content !text-gray-800 mb-2">
                       {item.description}
                     </p>
                     {item.keyAchievements === "string" &&
                       item.keyAchievements.trim() && (
-                        <ul className='list-disc list-inside content !text-gray-800 ml-4'>
+                        <ul className="list-disc list-inside content !text-gray-800 ml-4">
                           {item.keyAchievements
                             .split("\n")
                             .filter((achievement) => achievement.trim())
@@ -203,7 +208,7 @@ const TemplateFour = ({
       case "projects":
         return resumeData.projects.length > 0 ? (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.projects || "Projects"}
             </h2>
             <DndContext
@@ -220,25 +225,25 @@ const TemplateFour = ({
                     key={`project-${index}`}
                     id={`project-${index}`}
                   >
-                    <div className='flex justify-between items-start mb-1'>
-                      <div className='flex-1'>
-                        <div className='flex items-center gap-2'>
-                          <h3 className='content i-bold text-gray-900'>
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="content i-bold text-gray-900">
                             {item.name}
                           </h3>
                           {item.link && (
                             <Link
                               href={item.link}
-                              className='text-blue-600 hover:text-blue-800 transition-colors'
-                              target='_blank'
-                              rel='noopener noreferrer'
+                              className="text-blue-600 hover:text-blue-800 transition-colors"
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
-                              <FaExternalLinkAlt className='w-3 h-3' />
+                              <FaExternalLinkAlt className="w-3 h-3" />
                             </Link>
                           )}
                         </div>
                       </div>
-                      <div className='text-right'>
+                      <div className="text-right">
                         <DateRange
                           startYear={item.startYear}
                           endYear={item.endYear}
@@ -246,12 +251,12 @@ const TemplateFour = ({
                         />
                       </div>
                     </div>
-                    <p className='content !text-gray-800 mb-2'>
+                    <p className="content !text-gray-800 mb-2">
                       {item.description}
                     </p>
                     {typeof item.keyAchievements === "string" &&
                       item.keyAchievements.trim() && (
-                        <ul className='list-disc list-inside content !text-gray-800 ml-4'>
+                        <ul className="list-disc list-inside content !text-gray-800 ml-4">
                           {item.keyAchievements
                             .split("\n")
                             .filter((achievement) => achievement.trim())
@@ -272,17 +277,17 @@ const TemplateFour = ({
       case "skills":
         return (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.skills || "Technical Skills"}
             </h2>
             {resumeData.skills
               .filter((skill) => skill.title !== "Soft Skills")
               .map((skill, index) => (
-                <div key={`SKILLS-${index}`} className='mb-3'>
-                  <h3 className='content i-bold text-gray-900 mb-1'>
+                <div key={`SKILLS-${index}`} className="mb-3">
+                  <h3 className="content i-bold text-gray-900 mb-1">
                     {skill.title}
                   </h3>
-                  <p className='content !text-gray-800'>
+                  <p className="content !text-gray-800">
                     {skill.skills.join(", ")}
                   </p>
                 </div>
@@ -293,10 +298,10 @@ const TemplateFour = ({
       case "softSkills":
         return (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.softSkills || "Soft Skills"}
             </h2>
-            <p className='content !text-gray-800'>
+            <p className="content !text-gray-800">
               {resumeData.skills
                 .find((skill) => skill.title === "Soft Skills")
                 ?.skills?.join(", ")}
@@ -307,10 +312,10 @@ const TemplateFour = ({
       case "languages":
         return resumeData.languages.length > 0 ? (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.languages || "Languages"}
             </h2>
-            <p className='content !text-gray-800'>
+            <p className="content !text-gray-800">
               {resumeData.languages.join(", ")}
             </p>
           </div>
@@ -319,17 +324,17 @@ const TemplateFour = ({
       case "certifications":
         return resumeData.certifications.length > 0 ? (
           <div>
-            <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
               {customSectionTitles.certifications || "Certifications"}
             </h2>
-            <ul className='list-disc list-inside content !text-gray-800'>
+            <ul className="list-disc list-inside content !text-gray-800">
               {resumeData.certifications.map((cert, index) => (
-                <li key={index} className='mb-1'>
-                  <div className='flex items-center gap-2'>
+                <li key={index} className="mb-1">
+                  <div className="flex items-center gap-2">
                     <span>
                       {typeof cert === "string" ? cert : cert.name}
                       {typeof cert === "object" && cert.issuer && (
-                        <span className='text-gray-600'> - {cert.issuer}</span>
+                        <span className="text-gray-600"> - {cert.issuer}</span>
                       )}
                     </span>
                     {typeof cert === "object" &&
@@ -337,13 +342,58 @@ const TemplateFour = ({
                       cert.link.trim() !== "" && (
                         <Link
                           href={cert.link}
-                          className='text-blue-600 hover:text-blue-800 transition-colors'
-                          target='_blank'
-                          rel='noopener noreferrer'
+                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          <FaExternalLinkAlt className='w-3 h-3' />
+                          <FaExternalLinkAlt className="w-3 h-3" />
                         </Link>
                       )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null;
+
+      case "awards":
+        return resumeData.awards?.length > 0 ? (
+          <div>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1 text-gray-900">
+              {customSectionTitles.awards || "Awards & Achievements"}
+            </h2>
+            <ul className="list-disc list-inside content !text-gray-800">
+              {resumeData.awards.map((award, index) => (
+                <li key={index} className="mb-1">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="font-semibold text-gray-900">
+                        {award.name}
+                      </span>
+                      {award.issuer && (
+                        <span className="text-gray-600"> - {award.issuer}</span>
+                      )}
+                      {award.description && (
+                        <p className="text-gray-800 text-sm mt-0.5">
+                          {award.description}
+                        </p>
+                      )}
+                      {award.link && (
+                        <Link
+                          href={award.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 text-xs underline"
+                        >
+                          View Certificate / Photo
+                        </Link>
+                      )}
+                    </div>
+                    {award.date && (
+                      <span className="text-xs text-gray-500">
+                        {award.date}
+                      </span>
+                    )}
                   </div>
                 </li>
               ))}
@@ -359,17 +409,17 @@ const TemplateFour = ({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-      <div className='w-full h-full bg-white p-4'>
-        <div className='text-center mb-4'>
-          <h1 className='text-2xl font-bold text-gray-900'>
+      <div className="w-full h-full bg-white p-4">
+        <div className="text-center mb-4">
+          <h1 className="text-2xl font-bold text-gray-900">
             {resumeData.name}
           </h1>
-          <p className='text-lg !text-gray-800'>{resumeData.position}</p>
+          <p className="text-lg !text-gray-800">{resumeData.position}</p>
         </div>
-        <div className='animate-pulse'>
-          <div className='space-y-4'>
+        <div className="animate-pulse">
+          <div className="space-y-4">
             {orderedSections.map((section) => (
-              <div key={section.id} className='h-16 bg-gray-200 rounded'></div>
+              <div key={section.id} className="h-16 bg-gray-200 rounded"></div>
             ))}
           </div>
         </div>
@@ -378,24 +428,24 @@ const TemplateFour = ({
   }
 
   return (
-    <div className='w-full h-full bg-white '>
+    <div className="w-full h-full bg-white ">
       {/* Professional Header */}
-      <div className='text-center mb-2 no-break'>
-        <h1 className='name'>{resumeData.name}</h1>
-        <h2 className='profession'>{resumeData.position}</h2>
+      <div className="text-center mb-2 no-break">
+        <h1 className="name">{resumeData.name}</h1>
+        <h2 className="profession">{resumeData.position}</h2>
 
         {/* Contact Information */}
-        <div className='flex justify-center items-center gap-4 contact mb-2'>
-          <div className='flex items-center gap-1'>
-            <MdPhone className='text-gray-500' />
+        <div className="flex justify-center items-center gap-4 contact mb-2">
+          <div className="flex items-center gap-1">
+            <MdPhone className="text-gray-500" />
             <span>{resumeData.contactInformation}</span>
           </div>
-          <div className='flex items-center gap-1'>
-            <MdEmail className='text-gray-500' />
+          <div className="flex items-center gap-1">
+            <MdEmail className="text-gray-500" />
             <span>{resumeData.email}</span>
           </div>
-          <div className='flex items-center gap-1'>
-            <MdLocationOn className='text-gray-500' />
+          <div className="flex items-center gap-1">
+            <MdLocationOn className="text-gray-500" />
             <span>{resumeData.address}</span>
           </div>
         </div>
@@ -403,7 +453,7 @@ const TemplateFour = ({
         {/* Social Media */}
         {resumeData.socialMedia.length > 0 &&
         resumeData.socialMedia.length < 6 ? (
-          <div className='flex justify-center items-center gap-3 text-sm'>
+          <div className="flex justify-center items-center gap-3 text-sm">
             {resumeData.socialMedia.map((socialMedia, index) => {
               const icon = icons.find(
                 (icon) => icon.name === socialMedia.socialMedia.toLowerCase()
@@ -414,13 +464,13 @@ const TemplateFour = ({
                     socialMedia.socialMedia.toLowerCase() === "website"
                       ? "https://"
                       : socialMedia.socialMedia.toLowerCase() === "linkedin"
-                        ? "https://www."
-                        : "https://www."
+                      ? "https://www."
+                      : "https://www."
                   }${socialMedia.link}`}
                   key={index}
-                  className='inline-flex items-center gap-1 text-gray-800 transition-colors font-bold'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  className="inline-flex items-center gap-1 text-gray-800 transition-colors font-bold"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {icon && icon.icon}
                   <span>{socialMedia.socialMedia}</span>
@@ -432,14 +482,14 @@ const TemplateFour = ({
             })}
           </div>
         ) : (
-          <div className='text-red-500'>
+          <div className="text-red-500">
             {" "}
             Social Media links are limited to 5 entries
           </div>
         )}
       </div>
 
-      {/* Draggable Sections with Same System as Modern Template */}
+      {/* Draggable Sections */}
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
