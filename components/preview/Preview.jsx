@@ -22,8 +22,11 @@ import { ResumeContext } from "../../contexts/ResumeContext";
 import TemplateTwo from "./TemplateTwo";
 import TemplateFour from "./TemplateFour"
 import TemplateFive from "./TemplateFive"
-
 import TemplateSix from "./TemplateSix"
+
+// Import the new TemplateSeven component
+import TemplateSeven from "./TemplateSeven"
+
 import { useSectionTitles } from "../../contexts/SectionTitleContext";
 import {
   DndContext,
@@ -68,7 +71,7 @@ const Preview = () => {
     }
   }, [currentTemplate, isClient]);
 
-  // Available templates
+  // Available templates (TemplateSeven added here)
   const templates = [
     {
       id: "template1",
@@ -89,17 +92,24 @@ const Preview = () => {
       icon: FaTh,
     },
     {
-    id: "template5",
-    name: "Fancy Template",
-    description: "New modern layout",
-    icon: FaFileAlt,
-  },
-  {
-    id: "template6",
-    name: "Smart Template",
-    description: "clean layout with divisions",
-    icon: FaFileAlt,
-  },
+      id: "template5",
+      name: "Fancy Template",
+      description: "New modern layout",
+      icon: FaFileAlt,
+    },
+    {
+      id: "template6",
+      name: "Smart Template",
+      description: "clean layout with divisions",
+      icon: FaFileAlt,
+    },
+    // ADDED TEMPLATESEVEN
+    {
+      id: "template7",
+      name: "Sidebar Template",
+      description: "Two-column professional layout",
+      icon: FaTh,
+    },
   ];
 
   const defaultSections = [
@@ -285,8 +295,8 @@ const Preview = () => {
   return (
     <div className='w-full h-screen sticky top-0 preview rm-padding-print overflow-y-auto bg-gray-50'>
       {/* Template Dropdown */}
-      <div className="absolute top-2   right-4 sm:right-6 z-50 exclude-print">
-        <div className="flex flex-row  gap-2 sm:gap-3">
+      <div className="absolute top-2   right-4 sm:right-6 z-50 exclude-print">
+        <div className="flex flex-row  gap-2 sm:gap-3">
           {/* Section Toggle Button */}
           <div className='relative' ref={toggleRef}>
             <button
@@ -413,84 +423,97 @@ const Preview = () => {
         </div>
       </div>
       <A4PageWrapper>
-  {(() => {
-    switch (currentTemplate) {
-      case "template1":
-        return (
-          <ClassicTemplate
-            resumeData={resumeData}
-            sectionOrder={sectionOrder}
-            enabledSections={enabledSections}
-            handleDragEnd={handleDragEnd}
-            sensors={sensors}
-            icons={icons}
-            setResumeData={setResumeData}
-          />
-        );
-      case "template2":
-        return (
-          <TemplateTwo
-            namedata={resumeData.name}
-            positionData={resumeData.position}
-            contactData={resumeData.contactInformation}
-            emailData={resumeData.email}
-            addressData={resumeData.address}
-            telIcon={<MdPhone />}
-            emailIcon={<MdEmail />}
-            addressIcon={<MdLocationOn />}
-            summaryData={resumeData.summary}
-            educationData={resumeData.education}
-            projectsData={resumeData.projects}
-            workExperienceData={resumeData.workExperience}
-            skillsData={resumeData.skills}
-            languagesData={resumeData.languages}
-            certificationsData={resumeData.certifications}
-            sectionOrder={sectionOrder}
-            enabledSections={enabledSections}
-            onDragEnd={onDragEnd}
-            resumeData={resumeData}
-            setResumeData={setResumeData}
-          />
-        );
-      case "template5":
-        return (
-          <TemplateFive
-            resumeData={resumeData}
-            sectionOrder={sectionOrder}
-            enabledSections={enabledSections}
-            handleDragEnd={handleDragEnd}
-            sensors={sensors}
-            icons={icons}
-            setResumeData={setResumeData}
-          />
-        );
-      case "template6":
-        return (
-          <TemplateSix
-            resumeData={resumeData}
-            sectionOrder={sectionOrder}
-            enabledSections={enabledSections}
-            handleDragEnd={handleDragEnd}
-            sensors={sensors}
-            icons={icons}
-            setResumeData={setResumeData}
-          />
-        );
-      default:
-        return (
-          <TemplateFour
-            resumeData={resumeData}
-            sectionOrder={sectionOrder}
-            enabledSections={enabledSections}
-            handleDragEnd={handleDragEnd}
-            sensors={sensors}
-            icons={icons}
-            setResumeData={setResumeData}
-          />
-        );
-    }
-  })()}
-</A4PageWrapper>
+        {(() => {
+          switch (currentTemplate) {
+            case "template1":
+              return (
+                <ClassicTemplate
+                  resumeData={resumeData}
+                  sectionOrder={sectionOrder}
+                  enabledSections={enabledSections}
+                  handleDragEnd={handleDragEnd}
+                  sensors={sensors}
+                  icons={icons}
+                  setResumeData={setResumeData}
+                />
+              );
+            case "template2":
+              return (
+                <TemplateTwo
+                  namedata={resumeData.name}
+                  positionData={resumeData.position}
+                  contactData={resumeData.contactInformation}
+                  emailData={resumeData.email}
+                  addressData={resumeData.address}
+                  telIcon={<MdPhone />}
+                  emailIcon={<MdEmail />}
+                  addressIcon={<MdLocationOn />}
+                  summaryData={resumeData.summary}
+                  educationData={resumeData.education}
+                  projectsData={resumeData.projects}
+                  workExperienceData={resumeData.workExperience}
+                  skillsData={resumeData.skills}
+                  languagesData={resumeData.languages}
+                  certificationsData={resumeData.certifications}
+                  sectionOrder={sectionOrder}
+                  enabledSections={enabledSections}
+                  onDragEnd={onDragEnd}
+                  resumeData={resumeData}
+                  setResumeData={setResumeData}
+                />
+              );
+            case "template5":
+              return (
+                <TemplateFive
+                  resumeData={resumeData}
+                  sectionOrder={sectionOrder}
+                  enabledSections={enabledSections}
+                  handleDragEnd={handleDragEnd}
+                  sensors={sensors}
+                  icons={icons}
+                  setResumeData={setResumeData}
+                />
+              );
+            case "template6":
+              return (
+                <TemplateSix
+                  resumeData={resumeData}
+                  sectionOrder={sectionOrder}
+                  enabledSections={enabledSections}
+                  handleDragEnd={handleDragEnd}
+                  sensors={sensors}
+                  icons={icons}
+                  setResumeData={setResumeData}
+                />
+              );
+            // ADDED TEMPLATESEVEN CASE BLOCK
+            case "template7":
+              return (
+                <TemplateSeven
+                  resumeData={resumeData}
+                  sectionOrder={sectionOrder}
+                  enabledSections={enabledSections}
+                  handleDragEnd={handleDragEnd}
+                  sensors={sensors}
+                  icons={icons}
+                  setResumeData={setResumeData}
+                />
+              );
+            default:
+              return (
+                <TemplateFour
+                  resumeData={resumeData}
+                  sectionOrder={sectionOrder}
+                  enabledSections={enabledSections}
+                  handleDragEnd={handleDragEnd}
+                  sensors={sensors}
+                  icons={icons}
+                  setResumeData={setResumeData}
+                />
+              );
+          }
+        })()}
+      </A4PageWrapper>
 
 
     </div>
@@ -551,7 +574,7 @@ export const SortableItem = ({ id, children }) => {
       {...attributes}
       {...listeners}
       className={`mb-1
-         cursor-move ${isDragging ? "bg-gray-50 shadow-lg rounded p-2" : ""}`}
+          cursor-move ${isDragging ? "bg-gray-50 shadow-lg rounded p-2" : ""}`}
     >
       {children}
     </div>
@@ -651,7 +674,7 @@ const ClassicTemplate = ({
             <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
               {customSectionTitles.summary || "Professional Summary"}
             </h2>
-            <p className="content font-sans  text-black text-justify">{resumeData.summary}</p>
+            <p className="content font-sans  text-black text-justify">{resumeData.summary}</p>
           </div>
         );
 
@@ -665,7 +688,7 @@ const ClassicTemplate = ({
               <div key={index} className="mb-1 flex justify-between items-start">
                 <div className="flex-1">
                   <h3 className="content font-semibold text-gray-900">{item.school}</h3>
-                  <p className="content font-sans  text-black">{item.degree}</p>
+                  <p className="content font-sans  text-black">{item.degree}</p>
                 </div>
                 <div className='ml-4 text-right'>
                   <DateRange
@@ -708,9 +731,9 @@ const ClassicTemplate = ({
                         />
                       </div>
                     </div>
-                    <p className="content font-sans  text-black mb-1">{item.description}</p>
+                    <p className="content font-sans  text-black mb-1">{item.description}</p>
                     {typeof item.keyAchievements === "string" && item.keyAchievements.trim() && (
-                      <ul className="list-disc list-inside content font-sans  text-black ml-4">
+                      <ul className="list-disc list-inside content font-sans  text-black ml-4">
                         {item.keyAchievements
                           .split("\n")
                           .filter(achievement => achievement.trim())
@@ -774,9 +797,9 @@ const ClassicTemplate = ({
                         />
                       </div>
                     </div>
-                    <p className="content font-sans  text-black mb-1">{item.description}</p>
+                    <p className="content font-sans  text-black mb-1">{item.description}</p>
                     {typeof item.keyAchievements === "string" && item.keyAchievements.trim() && (
-                      <ul className="list-disc list-inside content font-sans  text-black ml-4">
+                      <ul className="list-disc list-inside content font-sans  text-black ml-4">
                         {item.keyAchievements
                           .split("\n")
                           .filter(achievement => achievement.trim())
@@ -805,7 +828,7 @@ const ClassicTemplate = ({
               .map((skill, index) => (
                 <div key={`SKILLS-${index}`} className="mb-1">
                   <h3 className="content i-bold text-gray-900 mb-1">{skill.title}</h3>
-                  <p className="content font-sans  text-black">{skill.skills.join(", ")}</p>
+                  <p className="content font-sans  text-black">{skill.skills.join(", ")}</p>
                 </div>
               ))}
           </div>
@@ -817,7 +840,7 @@ const ClassicTemplate = ({
             <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
               {customSectionTitles.softSkills || "Soft Skills"}
             </h2>
-            <p className="content font-sans  text-black">
+            <p className="content font-sans  text-black">
               {resumeData.skills.find(skill => skill.title === "Soft Skills")?.skills?.join(", ")}
             </p>
           </div>
@@ -829,7 +852,7 @@ const ClassicTemplate = ({
             <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
               {customSectionTitles.languages || "Languages"}
             </h2>
-            <p className="content font-sans  text-black">{resumeData.languages.join(", ")}</p>
+            <p className="content font-sans  text-black">{resumeData.languages.join(", ")}</p>
           </div>
         ) : null;
 
@@ -839,14 +862,14 @@ const ClassicTemplate = ({
             <h2 className='section-title border-b-2 border-gray-300 mb-1 text-gray-900'>
               {customSectionTitles.certifications || "Certifications"}
             </h2>
-            <ul className="list-disc list-inside content font-sans  text-black">
+            <ul className="list-disc list-inside content font-sans  text-black">
               {resumeData.certifications.map((cert, index) => (
                 <li key={index} className='mb-1'>
                   <div className='flex items-center gap-2'>
                     <span>
                       {typeof cert === 'string' ? cert : cert.name}
                       {typeof cert === 'object' && cert.issuer && (
-                        <span className="font-sans  text-black"> - {cert.issuer}</span>
+                        <span className="font-sans  text-black"> - {cert.issuer}</span>
                       )}
                     </span>
                     {typeof cert === "object" &&
@@ -936,8 +959,8 @@ const ClassicTemplate = ({
                     socialMedia.socialMedia.toLowerCase() === "website"
                       ? "https://"
                       : socialMedia.socialMedia.toLowerCase() === "linkedin"
-                        ? "https://www."
-                        : "https://www."
+                      ? "https://www."
+                      : "https://www."
                   }${socialMedia.link}`}
                   key={index}
                   className='inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 transition-colors'
@@ -1029,7 +1052,7 @@ const A4PageWrapper = ({ children }) => {
   }, []);
 
   return (
-    <div className="w-full  flex justify-center p-2 md:p-4 lg:p-6 print:p-0">
+    <div className="w-full  flex justify-center p-2 md:p-4 lg:p-6 print:p-0">
       <div className={`a4-preview lg:top-10 sm:top-14 top-10 print:shadow-none print:rounded-none print:border-none print:p-0 ${isOverflowing ? 'overflow-content' : ''}`}>
         <div 
           ref={contentRef}
