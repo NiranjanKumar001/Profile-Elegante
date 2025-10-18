@@ -1,14 +1,55 @@
 "use client";
 
+import React, { createContext, useContext, useState } from "react";
 import FormButton from "./FormButton";
-import React, { useContext } from "react";
-import { ResumeContext } from "../../contexts/ResumeContext";
 import EditableFormTitle from './EditableFormTitle';
-import { useTodayDate, MIN_DATE } from "../../lib/dateUtils";
+
+// Theme Context and Provider
+const ThemeContext = createContext();
+
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState("light"); // default to light mode
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  const contextValue = {
+    theme,
+    toggleTheme,
+  };
+
+  return (
+    <ThemeContext.Provider value={contextValue}>
+      <div className={theme === "dark" ? "theme-dark" : "theme-light"}>
+        {children}
+      </div>
+    </ThemeContext.Provider>
+  );
+};
+
+// Theme Toggle Button Component
+const ThemeToggle = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  return (
+    <button
+      onClick={toggleTheme}
+      style={{
+        marginBottom: "1rem",
+        padding: "0.5rem 1rem",
+        cursor: "pointer",
+      }}
+    >
+      Switch to {theme === "light" ? "Dark" : "Light"} Mode
+    </button>
+  );
+};
 
 const Projects = () => {
-  const { resumeData, setResumeData } = useContext(ResumeContext);
-  const todayDate = useTodayDate();
+  const { theme } = useContext(ThemeContext);
+  const { resumeData, setResumeData } = useContext(ResumeContext); // Assuming ResumeContext is provided somewhere above
+  // const todayDate = useTodayDate(); // You can keep or remove based on your usage
 
   const handleProjects = (e, index) => {
     const newProjects = [...resumeData.projects];
@@ -22,7 +63,7 @@ const Projects = () => {
       projects: [
         ...resumeData.projects,
         {
-          title: "",
+          name: "",
           link: "",
           description: "",
           keyAchievements: "",
@@ -40,10 +81,9 @@ const Projects = () => {
     setResumeData({ ...resumeData, projects: newProjects });
   };
 
-
-
   return (
-    <div className="form-section">
+    <div className={`form-section ${theme === "dark" ? "dark-mode" : "light-mode"}`}>
+      <ThemeToggle />
       <div className="form-section-title">
         <EditableFormTitle 
           sectionKey="projects" 
